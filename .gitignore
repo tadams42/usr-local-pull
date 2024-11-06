@@ -1,0 +1,28 @@
+# Python
+*.py[cod]
+__pycache__
+
+# Python packages
+*.egg
+*.egg-info
+dist/
+build/
+eggs/
+.eggs/
+sdist/
+
+.venv/
+
+# KDE stuff
+.directory
+
+.pytest_cache/
+
+.vscode/
+*.code-workspace
+
+requirements.txt
+
+.ruff_cache/
+
+.~lock*

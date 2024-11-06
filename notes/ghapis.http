@@ -1,0 +1,10 @@
+
+###
+# @name list_releases
+GET https://api.github.com/repos/starship/starship/releases
+Accept: application/vnd.github+json
+
+###
+# @name latest_release
+GET https://api.github.com/repos/starship/starship/releases/latest
+Accept: application/vnd.github+json

@@ -28,6 +28,7 @@ Supported apps:
 - [eza](https://github.com/eza-community/eza)
 - [fd](https://github.com/sharkdp/fd)
 - [fzf](https://github.com/junegunn/fzf)
+- [lazygit](https://github.com/jesseduffield/lazygit)
 - [mdbook](https://github.com/rust-lang/mdBook)
 - [neovide](https://github.com/neovide/neovide)
 - [ripgrep](https://github.com/BurntSushi/ripgrep)

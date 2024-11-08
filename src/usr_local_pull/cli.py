@@ -11,6 +11,7 @@ from .supported_apps import (
     Eza,
     FdFind,
     Fzf,
+    Lazygit,
     Mdbook,
     Neovide,
     Ripgrep,
@@ -104,6 +105,7 @@ def cli(prefix):
         YamlQ(prefix=prefix),
         Mdbook(prefix=prefix),
         Neovide(prefix=prefix),
+        Lazygit(prefix=prefix),
     ]:
         installed.extend(app.install())
 

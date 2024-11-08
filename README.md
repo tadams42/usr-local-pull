@@ -23,7 +23,9 @@ Supported apps:
 - [eza](https://github.com/eza-community/eza)
 - [fd](https://github.com/eza-community/eza)
 - [fzf](https://github.com/junegunn/fzf)
+- [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [starship](https://github.com/starship/starship)
+- [yq](https://github.com/starship/starship)
 
 ## How to use it?
 

@@ -12,6 +12,7 @@ from .supported_apps import (
     FdFind,
     Fzf,
     Mdbook,
+    Neovide,
     Ripgrep,
     Starship,
     YamlQ,
@@ -102,6 +103,7 @@ def cli(prefix):
         Starship(prefix=prefix),
         YamlQ(prefix=prefix),
         Mdbook(prefix=prefix),
+        Neovide(prefix=prefix),
     ]:
         installed.extend(app.install())
 

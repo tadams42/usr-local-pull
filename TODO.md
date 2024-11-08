@@ -1,17 +1,19 @@
 # TODO
 
-Add support for:
+## Add support for
 
-- goyq
-- mdbook
-- neovide
 - lazygit
 - stylua
+- goyq
 - jqp
 - jid
 - jq
 - fq
 - xq
 
-- https://github.com/skim-rs/skim
-- https://github.com/peco/peco
+## Can't be added ATM#
+
+[skim](https://github.com/skim-rs/skim)
+
+- broken CI: missing binaries on GitHub releases page
+- project maintenance problems?

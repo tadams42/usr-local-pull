@@ -29,6 +29,7 @@ Supported apps:
 - [fd](https://github.com/sharkdp/fd)
 - [fzf](https://github.com/junegunn/fzf)
 - [mdbook](https://github.com/rust-lang/mdBook)
+- [neovide](https://github.com/neovide/neovide)
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [starship](https://github.com/starship/starship)
 - [yq](https://github.com/starship/starship)

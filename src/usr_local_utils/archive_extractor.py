@@ -1,3 +1,4 @@
+import gzip
 import tarfile
 import zipfile
 from io import BytesIO
@@ -13,7 +14,7 @@ class ArchiveExtractor:
         self._members: list[str] | None = None
 
     @property
-    def members(self) -> list[str]:
+    def members(self) -> list[str]:  # noqa: C901
         if self._members is not None:
             return self._members
 
@@ -42,12 +43,15 @@ class ArchiveExtractor:
             for entry in archive:
                 self._members.append(entry.name)
 
+        elif self._is_gzip:
+            self._members = [Path(self.archive).name[:-3]]
+
         else:
             raise ValueError(f"Unsupported asset type {self.archive}!")
 
         return self._members
 
-    def extract(self, member: str) -> bytes:
+    def extract(self, member: str) -> bytes:  # noqa: C901
         retv: bytes | None = None
 
         if self._is_tar:
@@ -72,6 +76,11 @@ class ArchiveExtractor:
             archive = ar.Archive(self.file)
             for entry in archive:
                 retv = archive.open(entry, "rb").read()
+
+        elif self._is_gzip:
+            self.file.seek(0)
+            with gzip.GzipFile(fileobj=self.file, mode="rb") as gzip_f:
+                retv = gzip_f.read()
 
         if retv is None:
             raise ValueError("No such file!")
@@ -103,3 +112,7 @@ class ArchiveExtractor:
     @property
     def _is_ar(self) -> bool:
         return self.archive.name.lower().endswith(".deb")
+
+    @property
+    def _is_gzip(self) -> bool:
+        return not self._is_tar and self.archive.name.lower().endswith(".gz")

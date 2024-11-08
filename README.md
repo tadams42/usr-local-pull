@@ -19,9 +19,10 @@ Supported shells:
 
 Supported apps:
 
-- [bat](https://github.com/sharkdp/bat)
+- [bat](https://github.com/TomWright/dasel)
+- [dasel](https://github.com/starship/starship)
 - [eza](https://github.com/eza-community/eza)
-- [fd](https://github.com/eza-community/eza)
+- [fd](https://github.com/sharkdp/fd)
 - [fzf](https://github.com/junegunn/fzf)
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [starship](https://github.com/starship/starship)

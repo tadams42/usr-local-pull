@@ -88,9 +88,3 @@ class FdFind(GitHubApp):
         self.man_pages.append(
             ManPage(section=1, file_name="fd.1", data=extractor.extract(man))
         )
-
-        logger.info(
-            "Installed %s.",
-            self.latest_available_version,
-            extra={"app_name": self.name},
-        )

@@ -192,6 +192,12 @@ class App(ABC):
                 man_path.chmod(DOC_PERM)
                 installed_files.append(man_path)
 
+            logger.info(
+                "Installed %s.",
+                self.latest_available_version,
+                extra={"app_name": self.name},
+            )
+
         return installed_files
 
 

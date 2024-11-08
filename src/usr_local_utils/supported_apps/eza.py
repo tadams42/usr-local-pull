@@ -118,9 +118,3 @@ class Eza(GitHubApp):
                     section=section, file_name=file_name, data=extractor.extract(member)
                 )
             )
-
-        logger.info(
-            "Installed %s.",
-            self.latest_available_version,
-            extra={"app_name": self.name},
-        )

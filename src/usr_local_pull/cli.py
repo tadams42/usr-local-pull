@@ -20,6 +20,7 @@ from .supported_apps import (
     Ripgrep,
     Starship,
     Stylua,
+    Xq,
     YamlQ,
 )
 
@@ -114,6 +115,7 @@ def cli(prefix):
         GoJq(prefix=prefix),
         Jid(prefix=prefix),
         Jqp(prefix=prefix),
+        Xq(prefix=prefix),
     ]:
         installed.extend(app.install())
 

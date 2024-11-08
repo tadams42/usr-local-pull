@@ -37,6 +37,7 @@ Supported apps:
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [starship](https://github.com/starship/starship)
 - [stylua](https://github.com/JohnnyMorganz/StyLua)
+- [xq](https://github.com/sibprogrammer/xq)
 - [yq](https://github.com/starship/starship)
 
 ## How to use it?

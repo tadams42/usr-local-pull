@@ -2,10 +2,7 @@
 
 ## Add support for
 
-- jqp
 - jq
-- fq
-- xq
 
 ## Can't be added ATM#
 

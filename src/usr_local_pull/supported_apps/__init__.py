@@ -12,4 +12,5 @@ from .neovide import Neovide
 from .ripgrep import Ripgrep
 from .starship import Starship
 from .stylua import Stylua
+from .xq import Xq
 from .yq import YamlQ

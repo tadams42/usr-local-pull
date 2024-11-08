@@ -28,6 +28,7 @@ Supported apps:
 - [eza](https://github.com/eza-community/eza)
 - [fd](https://github.com/sharkdp/fd)
 - [fzf](https://github.com/junegunn/fzf)
+- [mdbook](https://github.com/rust-lang/mdBook)
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [starship](https://github.com/starship/starship)
 - [yq](https://github.com/starship/starship)

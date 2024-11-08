@@ -12,3 +12,6 @@ Add support for:
 - jq
 - fq
 - xq
+
+- https://github.com/skim-rs/skim
+- https://github.com/peco/peco

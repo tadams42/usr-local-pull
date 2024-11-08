@@ -5,7 +5,17 @@ import textwrap
 import click
 
 from .app import DEFAULT_PREFIX
-from .supported_apps import Bat, Dasel, Eza, FdFind, Fzf, Ripgrep, Starship, YamlQ
+from .supported_apps import (
+    Bat,
+    Dasel,
+    Eza,
+    FdFind,
+    Fzf,
+    Mdbook,
+    Ripgrep,
+    Starship,
+    YamlQ,
+)
 
 
 class AppNameContext(logging.Filter):
@@ -91,6 +101,7 @@ def cli(prefix):
         Ripgrep(prefix=prefix),
         Starship(prefix=prefix),
         YamlQ(prefix=prefix),
+        Mdbook(prefix=prefix),
     ]:
         installed.extend(app.install())
 

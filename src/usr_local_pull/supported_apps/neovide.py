@@ -2,13 +2,12 @@ from __future__ import annotations
 
 import logging
 import subprocess
-import tempfile
 from pathlib import Path
 
 from packaging.version import Version
 from packaging.version import parse as parse_version
 
-from ..app import BIN_PERM, DEFAULT_PREFIX, AppBinary, GitHubApp, ZshCompletion
+from ..app import DEFAULT_PREFIX, AppBinary, GitHubApp
 from ..archive_extractor import ArchiveExtractor
 
 logger = logging.getLogger(__name__)
@@ -30,7 +29,10 @@ class Neovide(GitHubApp):
             bin_path = self.prefix / "bin" / "neovide"
             if bin_path.exists():
                 data = subprocess.check_output(  # noqa: S603
-                    [bin_path.as_posix(), "--version"], shell=False, encoding="utf-8"
+                    [bin_path.as_posix(), "--version"],
+                    shell=False,
+                    encoding="utf-8",
+                    stderr=subprocess.STDOUT,
                 )
                 if data:
                     data = data.split()
@@ -42,6 +44,16 @@ class Neovide(GitHubApp):
                     self._installed_version,
                     extra={"app_name": self.name},
                 )
+
+        except subprocess.CalledProcessError as e:
+            logger.warning(
+                "neovide failed to report it's version. This is known problem with "
+                "version 0.13.3 where `neovide --version` command occasionally "
+                "coredumps. Assuming version `0.13.3` and hoping it will be fixed in "
+                "future versions..."
+            )
+            self._installed_version = parse_version("0.13.3")
+
         except Exception as e:
             raise RuntimeError(
                 f"Failed to fetch local app version for {self.name}!"

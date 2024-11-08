@@ -1,4 +1,4 @@
-# usr_local_utils
+# usr-local-pull
 
 Installs bunch of cmdline utilities into `/usr/local` directly from GitHub releases.
 
@@ -34,8 +34,8 @@ Install:
 
 ```sh
 sudo su -
-git clone https://github.com/tadams42/usr_local_utils.git
-cd usr_local_utils
+git clone https://github.com/tadams42/usr-local-pull.git
+cd usr-local-pull
 python -m venv .venv
 source .venv/bin/activate
 pip install -U pip wheel setuptools
@@ -48,7 +48,7 @@ Update:
 
 ```sh
 sudo su -
-cd usr_local_utils
+cd usr-local-pull
 git pull
 source .venv/bin/activate
 pip install .
@@ -58,9 +58,9 @@ Install or update apps:
 
 ```sh
 sudo su -
-cd usr_local_utils
+cd usr-local-pull
 source .venv/bin/activate
-usr_local_utils
+usr-local-pull
 ```
 
 Other side-effects:

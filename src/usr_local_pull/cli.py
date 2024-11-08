@@ -1,8 +1,10 @@
 import logging
 import logging.config
+import textwrap
 
 import click
 
+from .app import DEFAULT_PREFIX
 from .supported_apps import Bat, Dasel, Eza, FdFind, Fzf, Ripgrep, Starship, YamlQ
 
 
@@ -35,7 +37,7 @@ _CLI_LOGGING_CONFIG = {
             "level": "INFO",
             "propagate": False,
         },
-        "usr_local_utils": {
+        "usr_local_pull": {
             "handlers": ["console"],
             "level": "INFO",
             "propagate": False,
@@ -43,14 +45,38 @@ _CLI_LOGGING_CONFIG = {
     },
 }
 
+_PREFIX_HELP = textwrap.dedent(
+    """
+    Install prefix for everything.
+
+    Usually `/usr/local`.
+
+    Installing into `/usr/local` doesn't interfere with the rest of the system. Ie. you
+    can have `ripgrep` installed from both, official distro package and this script and
+    updating any of them will not overwrite the other. Which one gets used when you call
+    `ripgrep` from your shell, depends on your `$PATH`. In most modern distros, stuff
+    from `/usr/local` has priority.
+    """
+)
+
 
 @click.command()
-def cli():
-    """Example script."""
-    logging.config.dictConfig(_CLI_LOGGING_CONFIG)
+@click.option(
+    "-p",
+    "--prefix",
+    type=click.Path(
+        exists=False, dir_okay=True, file_okay=False, writable=True, resolve_path=True
+    ),
+    default=DEFAULT_PREFIX.as_posix(),
+    show_default=True,
+    help=_PREFIX_HELP,
+)
+def cli(prefix):
+    """
+    Installs or updates bunch of cmdline utilities directly from GitHub releases.
+    """
 
-    # prefix = "/usr/local"
-    prefix = "/tmp/installer_simulate"
+    logging.config.dictConfig(_CLI_LOGGING_CONFIG)
 
     logging.info("Installing into: %s", prefix)
 

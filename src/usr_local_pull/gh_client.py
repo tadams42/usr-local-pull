@@ -130,7 +130,7 @@ class GhCache:
 
     @classmethod
     def _repo_cache_dir(cls, owner: str, repo: str) -> Path:
-        retv = Path.home() / ".cache" / "usr_local_utils" / owner / repo
+        retv = Path.home() / ".cache" / "usr-local-pull" / owner / repo
         if not retv.exists():
             retv.mkdir(parents=True, exist_ok=True)
         return retv

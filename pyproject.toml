@@ -2,7 +2,7 @@
 requires = ["setuptools>=65", "wheel"]
 
 [project]
-name = "usr_local_utils"
+name = "usr-local-pull"
 version = "0.1.0"
 description = "Installs popular cmdline utils into /usr/local directly from GitHub released artifacts."
 readme = "README.md"
@@ -26,14 +26,14 @@ authors = [{ name = "Tomislav Adamic", email = "tomislav.adamic@tellus.hr" }]
 dependencies = ["packaging >= 24.1", "click == 8.1.7", "ar >= 1.0.0"]
 
 [project.urls]
-Source = "https://github.com/tadams42/usr-local-utils"
+Source = "https://github.com/tadams42/usr-local-pull"
 
 [project.optional-dependencies]
 dev = ["ipython", "black", "ruff", "check-manifest", "rich"]
 tests = ["pytest", "pytest-spec"]
 
 [project.scripts]
-usr_local_install = "usr_local_utils.cli:cli"
+usr-local-pull = "usr_local_pull.cli:cli"
 
 [tool.setuptools]
 zip-safe = false

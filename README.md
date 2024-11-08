@@ -21,6 +21,7 @@ Supported apps:
 
 - [bat](https://github.com/sharkdp/bat)
 - [eza](https://github.com/eza-community/eza)
+- [fd](https://github.com/eza-community/eza)
 
 ## How to use it?
 

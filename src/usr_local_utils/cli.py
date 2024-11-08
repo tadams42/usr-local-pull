@@ -3,7 +3,7 @@ import logging.config
 
 import click
 
-from .supported_apps import Bat, Eza
+from .supported_apps import Bat, Eza, FdFind
 
 
 class AppNameContext(logging.Filter):
@@ -59,6 +59,7 @@ def cli():
     for app in [
         Bat(prefix=prefix),
         Eza(prefix=prefix),
+        FdFind(prefix=prefix),
     ]:
         installed.extend(app.install())
 

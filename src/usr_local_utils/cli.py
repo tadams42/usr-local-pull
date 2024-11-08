@@ -3,7 +3,7 @@ import logging.config
 
 import click
 
-from .supported_apps import Bat
+from .supported_apps import Bat, Eza
 
 
 class AppNameContext(logging.Filter):
@@ -49,8 +49,8 @@ def cli():
     """Example script."""
     logging.config.dictConfig(_CLI_LOGGING_CONFIG)
 
-    prefix = "/usr/local"
-    # prefix = "/home/tomislav/downloads/utils/installer_simulate"
+    # prefix = "/usr/local"
+    prefix = "/tmp/installer_simulate"
 
     logging.info("Installing into: %s", prefix)
 
@@ -58,6 +58,7 @@ def cli():
 
     for app in [
         Bat(prefix=prefix),
+        Eza(prefix=prefix),
     ]:
         installed.extend(app.install())
 

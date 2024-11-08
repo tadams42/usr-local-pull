@@ -10,7 +10,8 @@ from your shell, depends on your `$PATH`. In most modern distros, stuff from
 
 Supported operating systems:
 
-- Any and only Linux
+- any and only Linux
+- only `x86_64` architecture
 
 Supported shells:
 
@@ -19,6 +20,7 @@ Supported shells:
 Supported apps:
 
 - [bat](https://github.com/sharkdp/bat)
+- [eza](https://github.com/eza-community/eza)
 
 ## How to use it?
 

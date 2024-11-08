@@ -11,6 +11,7 @@ from .supported_apps import (
     Eza,
     FdFind,
     Fzf,
+    GoJq,
     Lazygit,
     Mdbook,
     Neovide,
@@ -108,6 +109,7 @@ def cli(prefix):
         Neovide(prefix=prefix),
         Lazygit(prefix=prefix),
         Stylua(prefix=prefix),
+        GoJq(prefix=prefix),
     ]:
         installed.extend(app.install())
 

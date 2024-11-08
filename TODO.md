@@ -2,7 +2,6 @@
 
 ## Add support for
 
-- goyq
 - jqp
 - jid
 - jq

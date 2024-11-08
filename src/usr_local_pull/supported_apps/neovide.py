@@ -45,7 +45,7 @@ class Neovide(GitHubApp):
                     extra={"app_name": self.name},
                 )
 
-        except subprocess.CalledProcessError as e:
+        except subprocess.CalledProcessError:
             logger.warning(
                 "neovide failed to report it's version. This is known problem with "
                 "version 0.13.3 where `neovide --version` command occasionally "

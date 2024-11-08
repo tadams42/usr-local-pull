@@ -32,7 +32,7 @@ class GoJq(GitHubApp):
                 )
                 if data:
                     data = data.split()
-                if data and len(data) >= 2:
+                if data and len(data) >= 2:  # noqa: PLR2004
                     self._installed_version = parse_version(data[1])
             if self._installed_version:
                 logger.debug(

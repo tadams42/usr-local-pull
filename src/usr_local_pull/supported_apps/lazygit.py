@@ -2,13 +2,12 @@ from __future__ import annotations
 
 import logging
 import subprocess
-import tempfile
 from pathlib import Path
 
 from packaging.version import Version
 from packaging.version import parse as parse_version
 
-from ..app import BIN_PERM, DEFAULT_PREFIX, AppBinary, GitHubApp, ZshCompletion
+from ..app import DEFAULT_PREFIX, AppBinary, GitHubApp
 from ..archive_extractor import ArchiveExtractor
 
 logger = logging.getLogger(__name__)
@@ -46,7 +45,7 @@ class Lazygit(GitHubApp):
                         .strip()
                         .split("=")
                     )
-                if data and len(data) >= 2:
+                if data and len(data) >= 2:  # noqa: PLR2004
                     self._installed_version = parse_version(data[-1])
             if self._installed_version:
                 logger.debug(

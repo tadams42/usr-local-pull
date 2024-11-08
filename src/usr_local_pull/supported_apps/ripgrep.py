@@ -2,13 +2,16 @@ from __future__ import annotations
 
 import logging
 import subprocess
-from pathlib import Path
+from typing import TYPE_CHECKING
 
 from packaging.version import Version
 from packaging.version import parse as parse_version
 
 from ..app import DEFAULT_PREFIX, AppBinary, GitHubApp, ManPage, ZshCompletion
 from ..archive_extractor import ArchiveExtractor
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 logger = logging.getLogger(__name__)
 

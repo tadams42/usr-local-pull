@@ -22,6 +22,8 @@ Supported apps:
 - [bat](https://github.com/sharkdp/bat)
 - [eza](https://github.com/eza-community/eza)
 - [fd](https://github.com/eza-community/eza)
+- [fzf](https://github.com/junegunn/fzf)
+- [starship](https://github.com/starship/starship)
 
 ## How to use it?
 

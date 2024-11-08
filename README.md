@@ -29,6 +29,7 @@ Supported apps:
 - [fd](https://github.com/sharkdp/fd)
 - [fzf](https://github.com/junegunn/fzf)
 - [goyq](https://github.com/itchyny/gojq)
+- [jid](https://github.com/simeji/jid)
 - [lazygit](https://github.com/jesseduffield/lazygit)
 - [mdbook](https://github.com/rust-lang/mdBook)
 - [neovide](https://github.com/neovide/neovide)

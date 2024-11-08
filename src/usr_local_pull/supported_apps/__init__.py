@@ -4,6 +4,7 @@ from .eza import Eza
 from .fd_find import FdFind
 from .fzf import Fzf
 from .gojq import GoJq
+from .jid import Jid
 from .lazygit import Lazygit
 from .mdbook import Mdbook
 from .neovide import Neovide

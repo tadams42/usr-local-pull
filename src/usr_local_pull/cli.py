@@ -12,6 +12,7 @@ from .supported_apps import (
     FdFind,
     Fzf,
     GoJq,
+    Jid,
     Lazygit,
     Mdbook,
     Neovide,
@@ -110,6 +111,7 @@ def cli(prefix):
         Lazygit(prefix=prefix),
         Stylua(prefix=prefix),
         GoJq(prefix=prefix),
+        Jid(prefix=prefix),
     ]:
         installed.extend(app.install())
 

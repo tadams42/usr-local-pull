@@ -92,6 +92,14 @@ class GhRelease:
     def assets(self) -> list[dict[str, str | int | dict[str, str | int]]]:
         return self.data.get("assets", [])
 
+    @property
+    def tarball_url(self) -> str:
+        return self.data["tarball_url"]
+
+    @property
+    def gh_id(self) -> int:
+        return self.data["id"]
+
 
 @dataclass
 class GhDownloadedAsset:
@@ -100,6 +108,7 @@ class GhDownloadedAsset:
     repo: str
     name: str
     data: bytes = field(default=b"", repr=False)
+    tarball_name: str | None = None
 
 
 @dataclass
@@ -113,8 +122,11 @@ class GhCache:
         return f"releases/{owner}/{repo}"
 
     @classmethod
-    def _make_downloaded_asset_key(cls, gh_id: int) -> str:
-        return f"downloaded_assets/{gh_id}"
+    def _make_downloaded_asset_key(cls, gh_id: int, name: str) -> str:
+        if name == "tarball":
+            return f"downloaded_assets/tarball.{gh_id}"
+
+        return f"downloaded_assets/asset.{gh_id}"
 
     @classmethod
     def _repo_cache_dir(cls, owner: str, repo: str) -> Path:
@@ -167,25 +179,35 @@ class GhCache:
         return None
 
     def add_downloaded_asset(self, obj: GhDownloadedAsset) -> None:
-        data_path: Path = self._repo_cache_dir(obj.owner, obj.repo) / f"{obj.gh_id}"
+        if obj.name == "tarball":
+            data_path: Path = (
+                self._repo_cache_dir(obj.owner, obj.repo) / f"tarball.{obj.gh_id}"
+            )
+        else:
+            data_path: Path = (
+                self._repo_cache_dir(obj.owner, obj.repo) / f"asset.{obj.gh_id}"
+            )
 
         with data_path.open("wb") as f:
             f.write(obj.data)
 
-        key = self._make_downloaded_asset_key(obj.gh_id)
+        key = self._make_downloaded_asset_key(obj.gh_id, obj.name)
         self._entries[key] = obj
 
     def get_downloaded_asset(
         self, owner: str, repo: str, name: str, gh_id: int
     ) -> GhDownloadedAsset | None:
-        key = self._make_downloaded_asset_key(gh_id)
+        key = self._make_downloaded_asset_key(gh_id, name)
 
         retv: GhDownloadedAsset | None = self._entries.get(key)  # type: ignore
         if retv:
             logger.debug("memory cache hit for %s", name, extra={"app_name": repo})
             return retv
 
-        data_path: Path = self._repo_cache_dir(owner, repo) / f"{gh_id}"
+        if name == "tarball":
+            data_path: Path = self._repo_cache_dir(owner, repo) / f"tarball.{gh_id}"
+        else:
+            data_path: Path = self._repo_cache_dir(owner, repo) / f"asset.{gh_id}"
         if data_path.exists():
             logger.debug("disk cache hit for %s", name, extra={"app_name": repo})
             with data_path.open("rb") as f:
@@ -248,7 +270,10 @@ class GithubApiClient:
         return entry
 
     def downloaded_asset(self, named: str) -> GhDownloadedAsset:
-        gh_id = self.latest_release.asset_id(named)
+        if named == "tarball":
+            gh_id = self.latest_release.gh_id
+        else:
+            gh_id = self.latest_release.asset_id(named)
         if not gh_id:
             raise ValueError(f"No such asset name {named}!")
 
@@ -258,7 +283,10 @@ class GithubApiClient:
         if entry:
             return entry
 
-        url = self.latest_release.asset_download_url(named)
+        if named == "tarball":
+            url = self.latest_release.tarball_url
+        else:
+            url = self.latest_release.asset_download_url(named)
         if not url:
             raise ValueError(f"No such asset name {named}!")
         if not url.startswith(("http:", "https:")):

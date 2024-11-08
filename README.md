@@ -30,29 +30,18 @@ Supported apps:
 
 ## How to use it?
 
-Install:
+Install or update:
 
 ```sh
 sudo su -
-git clone https://github.com/tadams42/usr-local-pull.git
+mkdir ~/usr-local-pull
 cd usr-local-pull
 python -m venv .venv
 source .venv/bin/activate
-pip install -U pip wheel setuptools
-pip install .
+pip install -U usr-local-pull
 ```
 
 - needs to be run as `root` to be able to write into `/usr/local`
-
-Update:
-
-```sh
-sudo su -
-cd usr-local-pull
-git pull
-source .venv/bin/activate
-pip install .
-```
 
 Install or update apps:
 
@@ -60,7 +49,9 @@ Install or update apps:
 sudo su -
 cd usr-local-pull
 source .venv/bin/activate
-usr-local-pull
+usr-local-pull --help
+usr-local-pull --prefix /tmp/try_it_out
+usr-local-pull --prefix /usr/local
 ```
 
 Other side-effects:

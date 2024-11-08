@@ -12,5 +12,3 @@ Add support for:
 - jq
 - fq
 - xq
-
-Add PyPi package / GH action

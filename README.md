@@ -23,8 +23,8 @@ Supported shells:
 
 Supported apps:
 
-- [bat](https://github.com/TomWright/dasel)
-- [dasel](https://github.com/starship/starship)
+- [bat](https://github.com/sharkdp/bat)
+- [dasel](https://github.com/TomWright/dasel)
 - [eza](https://github.com/eza-community/eza)
 - [fd](https://github.com/sharkdp/fd)
 - [fzf](https://github.com/junegunn/fzf)
@@ -39,7 +39,7 @@ Supported apps:
 - [starship](https://github.com/starship/starship)
 - [stylua](https://github.com/JohnnyMorganz/StyLua)
 - [xq](https://github.com/sibprogrammer/xq)
-- [yq](https://github.com/starship/starship)
+- [yq](https://github.com/mikefarah/yq)
 
 ## How to use it?
 

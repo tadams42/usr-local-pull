@@ -5,6 +5,7 @@ from .fd_find import FdFind
 from .fzf import Fzf
 from .gojq import GoJq
 from .jid import Jid
+from .jq import Jq
 from .jqp import Jqp
 from .lazygit import Lazygit
 from .mdbook import Mdbook

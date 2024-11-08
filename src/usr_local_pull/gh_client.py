@@ -3,6 +3,7 @@ from __future__ import annotations
 import datetime
 import json
 import logging
+import re
 import urllib.request
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -37,7 +38,7 @@ class GhRelease:
 
         errs = []
 
-        ver_str = self.data.get("tag_name", None)
+        ver_str = self._cleanup_version_str(self.data.get("tag_name", None))
         version: Version | None = None
         try:
             version = parse_version(ver_str)
@@ -45,7 +46,7 @@ class GhRelease:
             errs.append(str(e))
 
         if not version:
-            ver_str = self.data.get("name", None)
+            ver_str = self._cleanup_version_str(self.data.get("name", None))
             try:
                 version = parse_version(ver_str)
             except Exception as e:
@@ -60,6 +61,21 @@ class GhRelease:
 
         self._version = version
         self._downloaded_at = datetime.datetime.fromisoformat(downloaded_at)
+
+    @classmethod
+    def _cleanup_version_str(cls, v: str | None):
+        if not v:
+            return ""
+
+        match = cls._CLEANER.match(v)
+        if match:
+            groups = match.groups()
+            if groups:
+                return groups[-1]
+
+        return ""
+
+    _CLEANER: ClassVar[re.Pattern] = re.compile(r"[^0-9]*(.*)")
 
     @property
     def downloaded_at(self) -> datetime.datetime:
@@ -248,6 +264,7 @@ class GithubApiClient:
             headers={"Accept": "application/vnd.github+json"},
         )
         data: dict[str, Any] | None = None
+
         try:
             with urllib.request.urlopen(request) as response:  # noqa: S310
                 if response.status == 200:  # noqa: PLR2004

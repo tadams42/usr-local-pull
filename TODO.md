@@ -1,9 +1,5 @@
 # TODO
 
-## Add support for
-
-- jq
-
 ## Can't be added ATM#
 
 [skim](https://github.com/skim-rs/skim)

@@ -13,6 +13,7 @@ from .supported_apps import (
     Fzf,
     GoJq,
     Jid,
+    Jq,
     Jqp,
     Lazygit,
     Mdbook,
@@ -116,6 +117,7 @@ def cli(prefix):
         Jid(prefix=prefix),
         Jqp(prefix=prefix),
         Xq(prefix=prefix),
+        Jq(prefix=prefix),
     ]:
         installed.extend(app.install())
 

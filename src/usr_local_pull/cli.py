@@ -13,6 +13,7 @@ from .supported_apps import (
     Fzf,
     GoJq,
     Jid,
+    Jqp,
     Lazygit,
     Mdbook,
     Neovide,
@@ -112,6 +113,7 @@ def cli(prefix):
         Stylua(prefix=prefix),
         GoJq(prefix=prefix),
         Jid(prefix=prefix),
+        Jqp(prefix=prefix),
     ]:
         installed.extend(app.install())
 

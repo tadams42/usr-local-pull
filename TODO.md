@@ -3,7 +3,6 @@
 ## Add support for
 
 - jqp
-- jid
 - jq
 - fq
 - xq

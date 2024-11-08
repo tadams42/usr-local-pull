@@ -30,6 +30,7 @@ Supported apps:
 - [fzf](https://github.com/junegunn/fzf)
 - [goyq](https://github.com/itchyny/gojq)
 - [jid](https://github.com/simeji/jid)
+- [jqp](https://github.com/noahgorstein/jqp)
 - [lazygit](https://github.com/jesseduffield/lazygit)
 - [mdbook](https://github.com/rust-lang/mdBook)
 - [neovide](https://github.com/neovide/neovide)

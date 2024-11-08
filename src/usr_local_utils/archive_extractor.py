@@ -3,6 +3,8 @@ import zipfile
 from io import BytesIO
 from pathlib import Path
 
+import ar
+
 
 class ArchiveExtractor:
     def __init__(self, archive: str | Path, data: bytes) -> None:
@@ -33,6 +35,13 @@ class ArchiveExtractor:
                     if not member.is_dir():
                         self._members.append(member.filename)
 
+        elif self._is_ar:
+            self._members = []
+            self.file.seek(0)
+            archive = ar.Archive(self.file)
+            for entry in archive:
+                self._members.append(entry.name)
+
         else:
             raise ValueError(f"Unsupported asset type {self.archive}!")
 
@@ -58,6 +67,11 @@ class ArchiveExtractor:
                     if not member_info.is_dir() and member_info.filename == member:
                         with zip_f.open(member_info) as member_f:
                             retv = member_f.read()
+        elif self._is_ar:
+            self.file.seek(0)
+            archive = ar.Archive(self.file)
+            for entry in archive:
+                retv = archive.open(entry, "rb").read()
 
         if retv is None:
             raise ValueError("No such file!")
@@ -67,7 +81,7 @@ class ArchiveExtractor:
     @property
     def _tar_read_mode(self) -> str | None:
         ext = self.archive.suffixes[-1].lower()
-        return {".gz": "r:gz", ".bz2": "r:bz2", "xz": "r:xz", ".tar": "r:"}.get(ext)
+        return {".gz": "r:gz", ".bz2": "r:bz2", ".xz": "r:xz", ".tar": "r:"}.get(ext)
 
     @property
     def _is_tar(self) -> bool:
@@ -85,3 +99,7 @@ class ArchiveExtractor:
     def _is_zip(self) -> bool:
         ext = "".join(self.archive.suffixes).lower()
         return ext == ".zip"
+
+    @property
+    def _is_ar(self) -> bool:
+        return self.archive.name.lower().endswith(".deb")

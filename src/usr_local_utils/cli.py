@@ -3,7 +3,7 @@ import logging.config
 
 import click
 
-from .supported_apps import Bat, Eza, FdFind, Fzf, Starship
+from .supported_apps import Bat, Eza, FdFind, Fzf, Ripgrep, Starship
 
 
 class AppNameContext(logging.Filter):
@@ -62,6 +62,7 @@ def cli():
         FdFind(prefix=prefix),
         Fzf(prefix=prefix),
         Starship(prefix=prefix),
+        Ripgrep(prefix=prefix),
     ]:
         installed.extend(app.install())
 

@@ -23,7 +23,7 @@ classifiers = [
 ]
 keywords = ["commandline cli packaging"]
 authors = [{ name = "Tomislav Adamic", email = "tomislav.adamic@tellus.hr" }]
-dependencies = ["packaging >= 24.1", "click == 8.1.7"]
+dependencies = ["packaging >= 24.1", "click == 8.1.7", "ar >= 1.0.0"]
 
 [project.urls]
 Source = "https://github.com/tadams42/usr-local-utils"

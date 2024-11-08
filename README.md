@@ -1,5 +1,9 @@
 # usr-local-pull
 
+[![PyPI Status](https://badge.fury.io/py/usr-local-pull.svg)](https://badge.fury.io/py/usr-local-pull)
+[![license](https://img.shields.io/pypi/l/usr-local-pull.svg)](https://opensource.org/licenses/MIT)
+[![python_versions](https://img.shields.io/pypi/pyversions/usr-local-pull.svg)](https://pypi.org/project/usr-local-pull/)
+
 Installs bunch of cmdline utilities into `/usr/local` directly from GitHub releases.
 
 Installing into `/usr/local` doesn't interfere with the rest of the system. Ie. you can

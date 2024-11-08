@@ -3,23 +3,23 @@ requires = ["setuptools>=65", "wheel"]
 
 [project]
 name = "usr-local-pull"
-version = "0.1.0"
+version = "0.2.0"
 description = "Installs popular cmdline utils into /usr/local directly from GitHub released artifacts."
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Developers",
-    "Topic :: Software Development :: Build Tools",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: POSIX :: Linux",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3 :: Only",
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Build Tools",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3 :: Only",
 ]
 keywords = ["commandline cli packaging"]
 authors = [{ name = "Tomislav Adamic", email = "tomislav.adamic@tellus.hr" }]
@@ -47,19 +47,19 @@ where = ["src"]
 minversion = "7.0"
 testpaths = ["tests"]
 addopts = [
-    "-rxEfsw",
-    "--strict-markers",
-    "--tb=short",
-    "--ignore=tests/data/",
-    "--show-capture=no",
-    # Folllowing plugins are normally not used, so we disable them to speed up pytest
-    # startup time. They can be enabled temporarily when needed.
-    "-pno:anyio",
-    "-pno:mock",
-    "-pno:profiling",
-    "-pno:random_order",
-    # "--random-order",
-    # "--random-order-bucket=class",
+  "-rxEfsw",
+  "--strict-markers",
+  "--tb=short",
+  "--ignore=tests/data/",
+  "--show-capture=no",
+  # Folllowing plugins are normally not used, so we disable them to speed up pytest
+  # startup time. They can be enabled temporarily when needed.
+  "-pno:anyio",
+  "-pno:mock",
+  "-pno:profiling",
+  "-pno:random_order",
+  # "--random-order",
+  # "--random-order-bucket=class",
 ]
 python_classes = ["Describe*", "When*", "describe_*", "when_*"]
 python_functions = ["it_*", "test_*", "then_*", "when_*"]
@@ -80,53 +80,53 @@ known-local-folder = ["src"]
 
 [tool.ruff.lint]
 ignore = [
-    "E501",   # line-too-long (E501)
-    "TRY003", # Avoid specifying long messages outside the exception class
-    "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
+  "E501",   # line-too-long (E501)
+  "TRY003", # Avoid specifying long messages outside the exception class
+  "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
 ]
 select = [
-    "E",
-    "F",
-    "I",   # isort (I)
-    "C90", # mccabe (C90)
-    "UP",  # pyupgrade (UP)
-    "S",   # flake8-bandit (S)
-    "FBT", # flake8-boolean-trap (FBT)
-    "B",   # flake8-bugbear (B)
-    "C4",  # flake8-comprehensions (C4)
-    "DTZ", # flake8-datetimez (DTZ)
-    "FA",  # flake8-future-annotations (FA)
-    "G",   # flake8-logging-format (G)
-    "PIE", # flake8-pie (PIE)
-    "PT",  # flake8-pytest-style (PT)
-    "RET", # flake8-return (RET)
-    "SIM", # flake8-simplify (SIM)
-    "TCH", # flake8-type-checking (TCH)
-    "PTH", # flake8-use-pathlib (PTH)
-    "PL",  # Pylint (PL)
-    "TRY", # tryceratops (TRY)
-    "RUF", # Ruff-specific rules (RUF)
+  "E",
+  "F",
+  "I",   # isort (I)
+  "C90", # mccabe (C90)
+  "UP",  # pyupgrade (UP)
+  "S",   # flake8-bandit (S)
+  "FBT", # flake8-boolean-trap (FBT)
+  "B",   # flake8-bugbear (B)
+  "C4",  # flake8-comprehensions (C4)
+  "DTZ", # flake8-datetimez (DTZ)
+  "FA",  # flake8-future-annotations (FA)
+  "G",   # flake8-logging-format (G)
+  "PIE", # flake8-pie (PIE)
+  "PT",  # flake8-pytest-style (PT)
+  "RET", # flake8-return (RET)
+  "SIM", # flake8-simplify (SIM)
+  "TCH", # flake8-type-checking (TCH)
+  "PTH", # flake8-use-pathlib (PTH)
+  "PL",  # Pylint (PL)
+  "TRY", # tryceratops (TRY)
+  "RUF", # Ruff-specific rules (RUF)
 ]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = [
-    "F401", # unused-import (F401)
+  "F401", # unused-import (F401)
 ]
 "tests/**/__init__.py" = [
-    "F403", # undefined-local-with-import-star (F403)
+  "F403", # undefined-local-with-import-star (F403)
 ]
 "tests/conftest.py" = [
-    "F403", # undefined-local-with-import-star (F403)
+  "F403", # undefined-local-with-import-star (F403)
 ]
 "tests/*" = [
-    "S101",    # Use of `assert` detected
-    "S311",    # Standard pseudo-random generators are not suitable for cryptographic ...
-    "S108",    # Probable insecure usage of temporary file
-    "PLR0913", # Too many arguments to function call (6 > 5)
-    "PLR2004", # Magic value used in comparison
-    "S105",    # Possible hardcoded password
+  "S101",    # Use of `assert` detected
+  "S311",    # Standard pseudo-random generators are not suitable for cryptographic ...
+  "S108",    # Probable insecure usage of temporary file
+  "PLR0913", # Too many arguments to function call (6 > 5)
+  "PLR2004", # Magic value used in comparison
+  "S105",    # Possible hardcoded password
 ]
 "**/migrations/*" = [
-    "S608",    # Possible SQL injection vector ...
-    "PLR0915", # Too many statements
+  "S608",    # Possible SQL injection vector ...
+  "PLR0915", # Too many statements
 ]

@@ -33,6 +33,7 @@ Supported apps:
 - [neovide](https://github.com/neovide/neovide)
 - [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [starship](https://github.com/starship/starship)
+- [stylua](https://github.com/JohnnyMorganz/StyLua)
 - [yq](https://github.com/starship/starship)
 
 ## How to use it?

@@ -8,4 +8,5 @@ from .mdbook import Mdbook
 from .neovide import Neovide
 from .ripgrep import Ripgrep
 from .starship import Starship
+from .stylua import Stylua
 from .yq import YamlQ

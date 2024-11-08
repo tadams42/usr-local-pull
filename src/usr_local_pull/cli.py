@@ -16,6 +16,7 @@ from .supported_apps import (
     Neovide,
     Ripgrep,
     Starship,
+    Stylua,
     YamlQ,
 )
 
@@ -106,6 +107,7 @@ def cli(prefix):
         Mdbook(prefix=prefix),
         Neovide(prefix=prefix),
         Lazygit(prefix=prefix),
+        Stylua(prefix=prefix),
     ]:
         installed.extend(app.install())
 

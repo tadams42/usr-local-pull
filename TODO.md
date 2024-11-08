@@ -2,8 +2,6 @@
 
 ## Add support for
 
-- lazygit
-- stylua
 - goyq
 - jqp
 - jid

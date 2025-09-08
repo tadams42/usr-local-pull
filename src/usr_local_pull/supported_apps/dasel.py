@@ -78,12 +78,14 @@ class Dasel(GitHubApp):
                 _.write(self.binary.data)
             exe_path.chmod(BIN_PERM)
 
-            self.zsh_completion = ZshCompletion(
-                app_name="dasel",
-                data=subprocess.check_output(  # noqa: S603
-                    [exe_path.as_posix(), "completion", "zsh"], shell=False
-                ),
-            )
+            self.zsh_completions = [
+                ZshCompletion(
+                    app_name="dasel",
+                    data=subprocess.check_output(  # noqa: S603
+                        [exe_path.as_posix(), "completion", "zsh"], shell=False
+                    ),
+                )
+            ]
 
             mans_dir = Path(tmp_dir) / "mans"
             mans_dir.mkdir(exist_ok=True)

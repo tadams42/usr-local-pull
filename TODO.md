@@ -1,9 +1,5 @@
 # TODO
 
-## To add
-
-- uv
-
 ## Currently broken
 
 [restish](https://github.com/rest-sh/restish)

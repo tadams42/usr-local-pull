@@ -77,12 +77,14 @@ class Fzf(GitHubApp):
                 _.write(self.binary.data)
             exe_path.chmod(BIN_PERM)
 
-            self.zsh_completion = ZshCompletion(
-                app_name="fzf",
-                data=subprocess.check_output(  # noqa: S603
-                    [exe_path.as_posix(), "--zsh"], shell=False
-                ),
-            )
+            self.zsh_completions = [
+                ZshCompletion(
+                    app_name="fzf",
+                    data=subprocess.check_output(  # noqa: S603
+                        [exe_path.as_posix(), "--zsh"], shell=False
+                    ),
+                )
+            ]
 
         asset = self.client.downloaded_asset("tarball")
         extractor = ArchiveExtractor(f"{asset.name}.tar.gz", asset.data)

@@ -17,5 +17,6 @@ from .ripgrep import Ripgrep
 from .rust_analyzer import RustAnalyzer
 from .starship import Starship
 from .stylua import Stylua
+from .uv import Uv
 from .xq import Xq
 from .yq import YamlQ

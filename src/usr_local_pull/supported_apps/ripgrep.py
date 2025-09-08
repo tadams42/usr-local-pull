@@ -88,4 +88,6 @@ class Ripgrep(GitHubApp):
         )
         if not zsh_complete:
             raise ValueError(f"Can't find 'ripgrep.zsh' in {asset_name}!")
-        self.zsh_completion = ZshCompletion("rg", data=extractor.extract(zsh_complete))
+        self.zsh_completions = [
+            ZshCompletion("rg", data=extractor.extract(zsh_complete))
+        ]

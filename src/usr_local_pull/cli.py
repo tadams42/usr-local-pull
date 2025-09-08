@@ -25,6 +25,7 @@ from .supported_apps import (
     RustAnalyzer,
     Starship,
     Stylua,
+    Uv,
     Xq,
     YamlQ,
 )
@@ -114,7 +115,6 @@ def cli(prefix):
         Starship(prefix=prefix),
         YamlQ(prefix=prefix),
         Mdbook(prefix=prefix),
-        Neovide(prefix=prefix),
         Lazygit(prefix=prefix),
         Stylua(prefix=prefix),
         GoJq(prefix=prefix),
@@ -123,9 +123,11 @@ def cli(prefix):
         Xq(prefix=prefix),
         Jq(prefix=prefix),
         AstGrep(prefix=prefix),
-        RustAnalyzer(prefix=prefix),
         Fnm(prefix=prefix),
         Gitleaks(prefix=prefix),
+        Uv(prefix=prefix),
+        # Neovide(prefix=prefix),
+        # RustAnalyzer(prefix=prefix),
     ]:
         installed.extend(app.install())
 

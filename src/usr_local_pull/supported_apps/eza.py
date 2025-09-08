@@ -93,7 +93,9 @@ class Eza(GitHubApp):
         zsh_complete = next((_ for _ in members if Path(_).name == "_eza"), None)
         if not zsh_complete:
             raise ValueError(f"Can't find '_eza' in {asset_name}!")
-        self.zsh_completion = ZshCompletion("eza", data=extractor.extract(zsh_complete))
+        self.zsh_completions = [
+            ZshCompletion("eza", data=extractor.extract(zsh_complete))
+        ]
 
         asset_name = next(
             (

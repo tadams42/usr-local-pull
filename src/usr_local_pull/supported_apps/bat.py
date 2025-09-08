@@ -84,7 +84,9 @@ class Bat(GitHubApp):
             raise ValueError(f"Asset extraction failed: {errs}!")
 
         self.binary = AppBinary("bat", data=extractor.extract(exe))
-        self.zsh_completion = ZshCompletion("bat", data=extractor.extract(zsh_complete))
+        self.zsh_completions = [
+            ZshCompletion("bat", data=extractor.extract(zsh_complete))
+        ]
         self.man_pages.append(
             ManPage(section=1, file_name="bat.1", data=extractor.extract(man))
         )

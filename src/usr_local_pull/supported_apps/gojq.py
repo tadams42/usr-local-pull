@@ -73,4 +73,4 @@ class GoJq(GitHubApp):
         zsh = next((_ for _ in members if Path(_).name == "_gojq"), None)
         if not zsh:
             raise ValueError(f"Can't find 'gojq' in {asset_name}!")
-        self.zsh_completion = ZshCompletion("gojq", data=extractor.extract(zsh))
+        self.zsh_completions = [ZshCompletion("gojq", data=extractor.extract(zsh))]

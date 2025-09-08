@@ -84,7 +84,9 @@ class FdFind(GitHubApp):
             raise ValueError(f"Asset extraction failed: {errs}!")
 
         self.binary = AppBinary("fd", data=extractor.extract(exe))
-        self.zsh_completion = ZshCompletion("fd", data=extractor.extract(zsh_complete))
+        self.zsh_completions = [
+            ZshCompletion("fd", data=extractor.extract(zsh_complete))
+        ]
         self.man_pages.append(
             ManPage(section=1, file_name="fd.1", data=extractor.extract(man))
         )

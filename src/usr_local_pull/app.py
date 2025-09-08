@@ -10,6 +10,8 @@ from typing import TYPE_CHECKING
 from .gh_client import GithubApiClient
 
 if TYPE_CHECKING:
+    from datetime import date
+
     from packaging.version import Version
 
 
@@ -120,17 +122,17 @@ class App(ABC):
 
         self.binary: AppBinary | None = None
         self.other_bins: list[AppBinary] | None = None
-        self.zsh_completion: ZshCompletion | None = None
+        self.zsh_completions: list[ZshCompletion] | None = None
         self.man_pages: list[ManPage] = []
 
     @property
     @abstractmethod
-    def installed_version(self) -> Version | None:
+    def installed_version(self) -> Version | date | None:
         pass
 
     @property
     @abstractmethod
-    def latest_available_version(self) -> Version:
+    def latest_available_version(self) -> Version | date:
         pass
 
     @property
@@ -147,7 +149,7 @@ class App(ABC):
         Unconditionally download all app's assets and populate:
 
         - self.binary
-        - self.zsh_completion
+        - self.zsh_completions
         - self.man_pages
         - self.other_bins
         """
@@ -185,14 +187,15 @@ class App(ABC):
                 bin_path.chmod(BIN_PERM)
                 installed_files.append(bin_path)
 
-            if self.zsh_completion:
-                zsh_path = self.zsh_completion.install_path(prefix=self.prefix)
-                if not zsh_path.parent.exists():
-                    zsh_path.parent.mkdir(parents=True)
-                with zsh_path.open("wb") as f:
-                    f.write(self.zsh_completion.data)
-                zsh_path.chmod(DOC_PERM)
-                installed_files.append(zsh_path)
+            if self.zsh_completions:
+                for compl in self.zsh_completions:
+                    zsh_path = compl.install_path(prefix=self.prefix)
+                    if not zsh_path.parent.exists():
+                        zsh_path.parent.mkdir(parents=True)
+                    with zsh_path.open("wb") as f:
+                        f.write(compl.data)
+                    zsh_path.chmod(DOC_PERM)
+                    installed_files.append(zsh_path)
 
             for man in self.man_pages:
                 man_path = man.install_path(prefix=self.prefix)
@@ -228,5 +231,5 @@ class GitHubApp(App):
         self.client = GithubApiClient(owner=gh_owner, repo=gh_repo)
 
     @property
-    def latest_available_version(self) -> Version:
+    def latest_available_version(self):
         return self.client.latest_release.version

@@ -90,9 +90,11 @@ class Starship(GitHubApp):
                 _.write(self.binary.data)
             exe_path.chmod(BIN_PERM)
 
-            self.zsh_completion = ZshCompletion(
-                app_name="starship",
-                data=subprocess.check_output(  # noqa: S603
-                    [exe_path.as_posix(), "completions", "zsh"], shell=False
-                ),
-            )
+            self.zsh_completions = [
+                ZshCompletion(
+                    app_name="starship",
+                    data=subprocess.check_output(  # noqa: S603
+                        [exe_path.as_posix(), "completions", "zsh"], shell=False
+                    ),
+                )
+            ]

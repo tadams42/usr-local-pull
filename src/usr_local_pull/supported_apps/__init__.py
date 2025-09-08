@@ -5,6 +5,7 @@ from .eza import Eza
 from .fd_find import FdFind
 from .fnm import Fnm
 from .fzf import Fzf
+from .gitleaks import Gitleaks
 from .gojq import GoJq
 from .jid import Jid
 from .jq import Jq

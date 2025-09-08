@@ -13,6 +13,7 @@ from .supported_apps import (
     FdFind,
     Fnm,
     Fzf,
+    Gitleaks,
     GoJq,
     Jid,
     Jq,
@@ -124,6 +125,7 @@ def cli(prefix):
         AstGrep(prefix=prefix),
         RustAnalyzer(prefix=prefix),
         Fnm(prefix=prefix),
+        Gitleaks(prefix=prefix),
     ]:
         installed.extend(app.install())
 

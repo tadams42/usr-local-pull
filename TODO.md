@@ -2,9 +2,7 @@
 
 ## To add
 
-- fnm
 - uv
-- gitleaks
 
 ## Currently broken
 

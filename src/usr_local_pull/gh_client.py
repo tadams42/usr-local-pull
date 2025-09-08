@@ -25,7 +25,7 @@ class GhRelease:
     owner: str
     repo: str
     data: dict[str, Any] = field(default_factory=dict, repr=False)
-    _version: Version = field(init=False)
+    _version: Version | datetime.date = field(init=False)
     _downloaded_at: datetime.datetime = field(init=False)
 
     DOWNLOADED_AT_KEY: ClassVar[str] = "_downloaded_at"
@@ -39,7 +39,7 @@ class GhRelease:
         errs = []
 
         ver_str = self._cleanup_version_str(self.data.get("tag_name", None))
-        version: Version | None = None
+        version: datetime.date | datetime.datetime | Version | None = None
         try:
             version = parse_version(ver_str)
         except Exception as e:
@@ -49,6 +49,13 @@ class GhRelease:
             ver_str = self._cleanup_version_str(self.data.get("name", None))
             try:
                 version = parse_version(ver_str)
+            except Exception as e:
+                errs.append(str(e))
+
+        if not version:
+            ver_str = self._cleanup_version_str(self.data.get("tag_name", None))
+            try:
+                version = datetime.date.fromisoformat(ver_str)
             except Exception as e:
                 errs.append(str(e))
 
@@ -82,7 +89,7 @@ class GhRelease:
         return self._downloaded_at
 
     @property
-    def version(self) -> Version:
+    def version(self) -> Version | datetime.date:
         return self._version
 
     @property
@@ -124,7 +131,6 @@ class GhDownloadedAsset:
     repo: str
     name: str
     data: bytes = field(default=b"", repr=False)
-    tarball_name: str | None = None
 
 
 @dataclass

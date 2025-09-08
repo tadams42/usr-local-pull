@@ -119,6 +119,7 @@ class App(ABC):
         self.post_install_notice: str | None = post_install_notice
 
         self.binary: AppBinary | None = None
+        self.other_bins: list[AppBinary] | None = None
         self.zsh_completion: ZshCompletion | None = None
         self.man_pages: list[ManPage] = []
 
@@ -148,6 +149,7 @@ class App(ABC):
         - self.binary
         - self.zsh_completion
         - self.man_pages
+        - self.other_bins
         """
 
     def install(self) -> list[Path]:
@@ -173,6 +175,15 @@ class App(ABC):
                 f.write(self.binary.data)
             bin_path.chmod(BIN_PERM)
             installed_files.append(bin_path)
+
+            for bin in self.other_bins or []:
+                bin_path = bin.install_path(prefix=self.prefix)
+                if not bin_path.parent.exists():
+                    bin_path.parent.mkdir(parents=True)
+                with bin_path.open("wb") as f:
+                    f.write(self.binary.data)
+                bin_path.chmod(BIN_PERM)
+                installed_files.append(bin_path)
 
             if self.zsh_completion:
                 zsh_path = self.zsh_completion.install_path(prefix=self.prefix)

@@ -6,10 +6,12 @@ import click
 
 from .app import DEFAULT_PREFIX
 from .supported_apps import (
+    AstGrep,
     Bat,
     Dasel,
     Eza,
     FdFind,
+    Fnm,
     Fzf,
     GoJq,
     Jid,
@@ -19,6 +21,7 @@ from .supported_apps import (
     Mdbook,
     Neovide,
     Ripgrep,
+    RustAnalyzer,
     Starship,
     Stylua,
     Xq,
@@ -118,6 +121,9 @@ def cli(prefix):
         Jqp(prefix=prefix),
         Xq(prefix=prefix),
         Jq(prefix=prefix),
+        AstGrep(prefix=prefix),
+        RustAnalyzer(prefix=prefix),
+        Fnm(prefix=prefix),
     ]:
         installed.extend(app.install())
 

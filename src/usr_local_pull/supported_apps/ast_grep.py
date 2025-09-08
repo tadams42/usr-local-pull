@@ -1,3 +1,4 @@
+# https://github.com/ast-grep/ast-grep
 from __future__ import annotations
 
 import logging
@@ -13,11 +14,10 @@ from ..archive_extractor import ArchiveExtractor
 logger = logging.getLogger(__name__)
 
 
-class Lazygit(GitHubApp):
-
+class AstGrep(GitHubApp):
     def __init__(self, prefix: str | Path = DEFAULT_PREFIX) -> None:
         super().__init__(
-            name="lazygit", prefix=prefix, gh_owner="jesseduffield", gh_repo="lazygit"
+            name="ast-grep", prefix=prefix, gh_owner="ast-grep", gh_repo="ast-grep"
         )
         self._installed_version: Version | None = None
 
@@ -27,25 +27,14 @@ class Lazygit(GitHubApp):
             return self._installed_version
 
         try:
-            bin_path = self.prefix / "bin" / "lazygit"
+            bin_path = self.prefix / "bin" / "ast-grep"
             if bin_path.exists():
                 data = subprocess.check_output(  # noqa: S603
                     [bin_path.as_posix(), "--version"], shell=False, encoding="utf-8"
                 )
                 if data:
-                    data = (
-                        next(
-                            (
-                                _
-                                for _ in data.split(",")
-                                if _.strip().startswith("version=")
-                            ),
-                            "",
-                        )
-                        .strip()
-                        .split("=")
-                    )
-                if data and len(data) >= 2:  # noqa: PLR2004
+                    data = data.split()
+                if data:
                     self._installed_version = parse_version(data[-1])
             if self._installed_version:
                 logger.debug(
@@ -65,8 +54,7 @@ class Lazygit(GitHubApp):
             (
                 a
                 for a in self.client.latest_release.asset_names
-                if a.startswith("lazygit_")
-                and a.endswith(("_Linux_x86_64.tar.gz", "_linux_x86_64.tar.gz"))
+                if a == "app-x86_64-unknown-linux-gnu.zip"
             ),
             None,
         )
@@ -79,7 +67,12 @@ class Lazygit(GitHubApp):
         extractor = ArchiveExtractor(asset.name, asset.data)
         members = extractor.members
 
-        exe = next((_ for _ in members if Path(_).name == "lazygit"), None)
+        exe = next((_ for _ in members if Path(_).name == "ast-grep"), None)
         if not exe:
-            raise ValueError(f"Can't find 'lazygit' in {asset_name}!")
-        self.binary = AppBinary("lazygit", data=extractor.extract(exe))
+            raise ValueError(f"Can't find 'ast-grep' in {asset_name}!")
+        self.binary = AppBinary("ast-grep", data=extractor.extract(exe))
+
+        exe = next((_ for _ in members if Path(_).name == "sg"), None)
+        if not exe:
+            raise ValueError(f"Can't find 'sg' in {asset_name}!")
+        self.other_bins = [AppBinary("sg", data=extractor.extract(exe))]

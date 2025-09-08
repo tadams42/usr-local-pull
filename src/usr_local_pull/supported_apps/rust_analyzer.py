@@ -1,3 +1,9 @@
+# https://github.com/rust-lang/rust-analyzer
+#
+#
+# also, as a rustup component:
+#
+#    $ rustup component add rust-analyzer
 from __future__ import annotations
 
 import logging
@@ -13,11 +19,13 @@ from ..archive_extractor import ArchiveExtractor
 logger = logging.getLogger(__name__)
 
 
-class Lazygit(GitHubApp):
-
+class RustAnalyzer(GitHubApp):
     def __init__(self, prefix: str | Path = DEFAULT_PREFIX) -> None:
         super().__init__(
-            name="lazygit", prefix=prefix, gh_owner="jesseduffield", gh_repo="lazygit"
+            name="rust-analyzer",
+            prefix=prefix,
+            gh_owner="rust-lang",
+            gh_repo="rust-analyzer",
         )
         self._installed_version: Version | None = None
 
@@ -27,26 +35,15 @@ class Lazygit(GitHubApp):
             return self._installed_version
 
         try:
-            bin_path = self.prefix / "bin" / "lazygit"
+            bin_path = self.prefix / "bin" / "rust-analyzer"
             if bin_path.exists():
                 data = subprocess.check_output(  # noqa: S603
                     [bin_path.as_posix(), "--version"], shell=False, encoding="utf-8"
                 )
                 if data:
-                    data = (
-                        next(
-                            (
-                                _
-                                for _ in data.split(",")
-                                if _.strip().startswith("version=")
-                            ),
-                            "",
-                        )
-                        .strip()
-                        .split("=")
-                    )
-                if data and len(data) >= 2:  # noqa: PLR2004
-                    self._installed_version = parse_version(data[-1])
+                    data = data.replace("-", " ").split()[-2]
+                if data:
+                    self._installed_version = parse_version(data[-2])
             if self._installed_version:
                 logger.debug(
                     "Found installed version %s",
@@ -65,8 +62,7 @@ class Lazygit(GitHubApp):
             (
                 a
                 for a in self.client.latest_release.asset_names
-                if a.startswith("lazygit_")
-                and a.endswith(("_Linux_x86_64.tar.gz", "_linux_x86_64.tar.gz"))
+                if a == "rust-analyzer-x86_64-unknown-linux-gnu.gz"
             ),
             None,
         )
@@ -79,7 +75,14 @@ class Lazygit(GitHubApp):
         extractor = ArchiveExtractor(asset.name, asset.data)
         members = extractor.members
 
-        exe = next((_ for _ in members if Path(_).name == "lazygit"), None)
+        exe = next(
+            (
+                _
+                for _ in members
+                if Path(_).name == "rust-analyzer-x86_64-unknown-linux-gnu"
+            ),
+            None,
+        )
         if not exe:
-            raise ValueError(f"Can't find 'lazygit' in {asset_name}!")
-        self.binary = AppBinary("lazygit", data=extractor.extract(exe))
+            raise ValueError(f"Can't find 'rust-analyzer' in {asset_name}!")
+        self.binary = AppBinary("rust-analyzer", data=extractor.extract(exe))

@@ -1,7 +1,9 @@
+from .ast_grep import AstGrep
 from .bat import Bat
 from .dasel import Dasel
 from .eza import Eza
 from .fd_find import FdFind
+from .fnm import Fnm
 from .fzf import Fzf
 from .gojq import GoJq
 from .jid import Jid
@@ -11,6 +13,7 @@ from .lazygit import Lazygit
 from .mdbook import Mdbook
 from .neovide import Neovide
 from .ripgrep import Ripgrep
+from .rust_analyzer import RustAnalyzer
 from .starship import Starship
 from .stylua import Stylua
 from .xq import Xq

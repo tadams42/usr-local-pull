@@ -13,6 +13,7 @@ from .jqp import Jqp
 from .lazygit import Lazygit
 from .mdbook import Mdbook
 from .neovide import Neovide
+from .restish import Restish
 from .ripgrep import Ripgrep
 from .rust_analyzer import RustAnalyzer
 from .starship import Starship

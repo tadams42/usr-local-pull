@@ -11,7 +11,6 @@ classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
   "Topic :: Software Development :: Build Tools",
-  "License :: OSI Approved :: MIT License",
   "Operating System :: POSIX :: Linux",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
@@ -23,14 +22,23 @@ classifiers = [
 ]
 keywords = ["commandline cli packaging"]
 authors = [{ name = "Tomislav Adamic", email = "tomislav.adamic@tellus.hr" }]
+license = "MIT"
+
 dependencies = ["packaging >= 24.1", "click == 8.1.7", "ar >= 1.0.0"]
 
 [project.urls]
 Source = "https://github.com/tadams42/usr-local-pull"
 
-[project.optional-dependencies]
-dev = ["ipython", "black", "ruff", "check-manifest", "rich"]
-tests = ["pytest", "pytest-spec"]
+[dependency-groups]
+dev = [
+  "ipython",
+  "black",
+  "ruff",
+  "check-manifest",
+  "rich",
+  "pytest",
+  "pytest-spec",
+]
 
 [project.scripts]
 usr-local-pull = "usr_local_pull.cli:cli"

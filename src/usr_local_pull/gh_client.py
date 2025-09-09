@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-import datetime
 import json
 import logging
 import re
 import urllib.request
 from dataclasses import dataclass, field
+from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import TYPE_CHECKING, ClassVar
 
@@ -25,8 +25,8 @@ class GhRelease:
     owner: str
     repo: str
     data: dict[str, Any] = field(default_factory=dict, repr=False)
-    _version: Version | datetime.date = field(init=False)
-    _downloaded_at: datetime.datetime = field(init=False)
+    _version: Version | date = field(init=False)
+    _downloaded_at: datetime = field(init=False)
 
     DOWNLOADED_AT_KEY: ClassVar[str] = "_downloaded_at"
 
@@ -38,24 +38,24 @@ class GhRelease:
 
         errs = []
 
-        ver_str = self._cleanup_version_str(self.data.get("tag_name", None))
-        version: datetime.date | datetime.datetime | Version | None = None
+        tag_name: str | None = self.data.get("tag_name", None)
+        release_name: str | None = self.data.get("name", None)
+
+        version: date | Version | None = None
         try:
-            version = parse_version(ver_str)
+            version = parse_version(self._cleanup_version_str(tag_name))
         except Exception as e:
             errs.append(str(e))
 
         if not version:
-            ver_str = self._cleanup_version_str(self.data.get("name", None))
             try:
-                version = parse_version(ver_str)
+                version = parse_version(self._cleanup_version_str(release_name))
             except Exception as e:
                 errs.append(str(e))
 
         if not version:
-            ver_str = self._cleanup_version_str(self.data.get("tag_name", None))
             try:
-                version = datetime.date.fromisoformat(ver_str)
+                version = date.fromisoformat(tag_name or "")
             except Exception as e:
                 errs.append(str(e))
 
@@ -67,7 +67,7 @@ class GhRelease:
             )
 
         self._version = version
-        self._downloaded_at = datetime.datetime.fromisoformat(downloaded_at)
+        self._downloaded_at = datetime.fromisoformat(downloaded_at)
 
     @classmethod
     def _cleanup_version_str(cls, v: str | None):
@@ -85,11 +85,11 @@ class GhRelease:
     _CLEANER: ClassVar[re.Pattern] = re.compile(r"[^0-9]*(.*)")
 
     @property
-    def downloaded_at(self) -> datetime.datetime:
+    def downloaded_at(self) -> datetime:
         return self._downloaded_at
 
     @property
-    def version(self) -> Version | datetime.date:
+    def version(self) -> Version | date:
         return self._version
 
     @property
@@ -168,7 +168,7 @@ class GhCache:
 
     def get_release(self, owner: str, repo: str) -> GhRelease | None:
         key = self._make_release_key(owner, repo)
-        now = datetime.datetime.now(datetime.UTC)
+        now = datetime.now(UTC)
 
         retv: GhRelease | None = self._entries.get(key)  # type: ignore
         if retv:
@@ -188,7 +188,7 @@ class GhCache:
             if not downloaded_at_s:
                 return None
 
-            downloaded_at = datetime.datetime.fromisoformat(downloaded_at_s)
+            downloaded_at = datetime.fromisoformat(downloaded_at_s)
             if (now - downloaded_at).seconds > self._RELEASE_CACHE_FOR_SECONDS:
                 return None
 
@@ -248,17 +248,13 @@ _CACHE = GhCache()
 
 class GithubApiClient:
     _GH_API_URL: Final[str] = "https://api.github.com/repos"
+    "https://api.github.com/repos/OWNER/REPO/releases"
 
     def __init__(self, *, owner: str, repo: str) -> None:
         self.repo = repo
         self.owner = owner
 
-    @property
-    def latest_release(self) -> GhRelease:
-        entry = _CACHE.get_release(self.owner, self.repo)
-        if entry:
-            return entry
-
+    def _gh_releases(self) -> list[dict]:
         logger.info(
             "Fetching latest GitHub release info for %s/%s",
             self.owner,
@@ -266,10 +262,10 @@ class GithubApiClient:
             extra={"app_name": self.repo},
         )
         request = urllib.request.Request(  # noqa: S310
-            url=f"{self._GH_API_URL}/{self.owner}/{self.repo}/releases/latest",
+            url=f"{self._GH_API_URL}/{self.owner}/{self.repo}/releases?per_page=5&page=1",
             headers={"Accept": "application/vnd.github+json"},
         )
-        data: dict[str, Any] | None = None
+        data: list[dict] | None = None
 
         try:
             with urllib.request.urlopen(request) as response:  # noqa: S310
@@ -284,9 +280,29 @@ class GithubApiClient:
                 f"Can't fetch GitHub release info for {self.owner}/{self.repo}!"
             )
 
-        data[GhRelease.DOWNLOADED_AT_KEY] = datetime.datetime.now(
-            datetime.UTC
-        ).isoformat()
+        return data or []
+
+    @property
+    def latest_release(self) -> GhRelease:
+        entry = _CACHE.get_release(self.owner, self.repo)
+        if entry:
+            return entry
+
+        releases: list[dict] = self._gh_releases()
+        data = next(
+            (
+                _
+                for _ in releases
+                if len(_.get("assets", [])) and _.get("tag_name", "") != "nightly"
+            ),
+            None,
+        )
+        if not data:
+            raise ValueError(
+                f"Couldn't find any release with assets for {self.owner}/{self.repo}"
+            )
+
+        data[GhRelease.DOWNLOADED_AT_KEY] = datetime.now(UTC).isoformat()
         entry = GhRelease(owner=self.owner, repo=self.repo, data=data)
         _CACHE.add_release(entry)
 

@@ -14,7 +14,6 @@ logger = logging.getLogger(__name__)
 
 
 class Lazygit(GitHubApp):
-
     def __init__(self, prefix: str | Path = DEFAULT_PREFIX) -> None:
         super().__init__(
             name="lazygit", prefix=prefix, gh_owner="jesseduffield", gh_repo="lazygit"

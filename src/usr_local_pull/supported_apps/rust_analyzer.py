@@ -1,6 +1,5 @@
 # https://github.com/rust-lang/rust-analyzer
 #
-#
 # also, as a rustup component:
 #
 #    $ rustup component add rust-analyzer
@@ -43,7 +42,7 @@ class RustAnalyzer(GitHubApp):
                 if data:
                     data = data.replace("-", " ").split()[-2]
                 if data:
-                    self._installed_version = parse_version(data[-2])
+                    self._installed_version = parse_version(data)
             if self._installed_version:
                 logger.debug(
                     "Found installed version %s",

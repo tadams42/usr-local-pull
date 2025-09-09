@@ -1,11 +1,16 @@
 from __future__ import annotations
 
+import contextlib
 import logging
 import stat
+import subprocess
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import TYPE_CHECKING
+
+from packaging.version import Version
+from packaging.version import parse as parse_version
 
 from .gh_client import GithubApiClient
 
@@ -127,7 +132,7 @@ class App(ABC):
 
     @property
     @abstractmethod
-    def installed_version(self) -> Version | date | None:
+    def installed_version(self) -> Version | None:
         pass
 
     @property
@@ -187,24 +192,8 @@ class App(ABC):
                 bin_path.chmod(BIN_PERM)
                 installed_files.append(bin_path)
 
-            if self.zsh_completions:
-                for compl in self.zsh_completions:
-                    zsh_path = compl.install_path(prefix=self.prefix)
-                    if not zsh_path.parent.exists():
-                        zsh_path.parent.mkdir(parents=True)
-                    with zsh_path.open("wb") as f:
-                        f.write(compl.data)
-                    zsh_path.chmod(DOC_PERM)
-                    installed_files.append(zsh_path)
-
-            for man in self.man_pages:
-                man_path = man.install_path(prefix=self.prefix)
-                if not man_path.parent.exists():
-                    man_path.parent.mkdir(parents=True)
-                with man_path.open("wb") as f:
-                    f.write(man.data)
-                man_path.chmod(DOC_PERM)
-                installed_files.append(man_path)
+            installed_files.extend(self._install_zsh_completions())
+            installed_files.extend(self._install_man_pages())
 
             logger.info(
                 "Installed %s.",
@@ -213,6 +202,35 @@ class App(ABC):
             )
 
         return installed_files
+
+    def _install_zsh_completions(self):
+        retv = []
+
+        if self.zsh_completions:
+            for _ in self.zsh_completions:
+                zsh_path = _.install_path(prefix=self.prefix)
+                if not zsh_path.parent.exists():
+                    zsh_path.parent.mkdir(parents=True)
+                with zsh_path.open("wb") as f:
+                    f.write(_.data)
+                zsh_path.chmod(DOC_PERM)
+                retv.append(zsh_path)
+
+        return retv
+
+    def _install_man_pages(self):
+        retv = []
+
+        for man in self.man_pages:
+            man_path = man.install_path(prefix=self.prefix)
+            if not man_path.parent.exists():
+                man_path.parent.mkdir(parents=True)
+            with man_path.open("wb") as f:
+                f.write(man.data)
+            man_path.chmod(DOC_PERM)
+            retv.append(man_path)
+
+        return retv
 
 
 class GitHubApp(App):
@@ -229,7 +247,46 @@ class GitHubApp(App):
             name=name, prefix=prefix, post_install_notice=post_install_notice
         )
         self.client = GithubApiClient(owner=gh_owner, repo=gh_repo)
+        self._installed_version: Version | None = None
 
     @property
     def latest_available_version(self):
         return self.client.latest_release.version
+
+    @property
+    def installed_version(self) -> Version | None:
+        if self._installed_version:
+            return self._installed_version
+        self._installed_version = self.get_installed_version(self.name, -1)
+        return self._installed_version
+
+    def get_installed_version(
+        self, exe_name: str, version_str_idx: int = -1
+    ) -> Version | None:
+        retv = None
+
+        try:
+            bin_path = self.prefix / "bin" / exe_name
+            if bin_path.exists():
+                data = subprocess.check_output(  # noqa: S603
+                    [bin_path.as_posix(), "--version"], shell=False, encoding="utf-8"
+                )
+
+                with contextlib.suppress(Exception):
+                    _ = data.split()
+                    retv = parse_version(_[version_str_idx])
+
+                if not retv:
+                    _ = data.replace("-", " ").split()
+                    retv = parse_version(_[version_str_idx])
+
+            if retv:
+                logger.debug(
+                    "Found installed version %s", retv, extra={"app_name": self.name}
+                )
+        except Exception as e:
+            raise RuntimeError(
+                f"Failed to fetch local app version for {self.name}!"
+            ) from e
+
+        return retv

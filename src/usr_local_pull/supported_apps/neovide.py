@@ -47,10 +47,8 @@ class Neovide(GitHubApp):
 
         except subprocess.CalledProcessError:
             logger.warning(
-                "neovide failed to report it's version. This is known problem with "
-                "version 0.13.3 where `neovide --version` command occasionally "
-                "coredumps. Assuming version `0.13.3` and hoping it will be fixed in "
-                "future versions..."
+                "neovide failed to report it's version. This is known problem: "
+                "`neovide --version` occasionally segfaults. Assuming version `0.13.3`"
             )
             self._installed_version = parse_version("0.13.3")
 
